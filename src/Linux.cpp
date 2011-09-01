@@ -49,20 +49,80 @@ void Linux::setSystemMemory()
 	}
 }
 
+void Linux::getSysSysname()
+{
+	return systemInfo[0];
+}
+
+void Linux::getSysNodename()
+{
+	return systemInfo[1];
+}
+
+void Linux::getSysRelease()
+{
+	return systemInfo[2];
+}
+
+void Linux::getSysVersion()
+{
+	return systemInfo[3];
+}
+
+void Linux::getSysMachine()
+{
+	return systemInfo[4];
+}
+
+void Linux::getUserLogin()
+{
+	return userInfo[0];
+}
+
+void Linux::getUserUid();
+{
+	return userInfo[1];
+}
+
+void Linux::getUserGid()
+{
+	return userInfo[2];
+}
+
+void Linux::getSysTotalram()
+{
+	return sysMemory[0];
+}
+
+void Linux::getSysFreeram()
+{
+	return sysMemory[1];
+}
+
+void Linux::getSysTotalswap()
+{
+	return sysMemory[2];
+}
+
+void Linux::getSysFreeswap()
+{
+	return sysMemory[3];
+}
+
 void Linux::print()
 {
   //for (int i=0; i<systemInfo.size(); i++)
   //      cout << systemInfo[i] << endl;
-  cout << "Operating System: \"" << systemInfo[0] << "\", "
-  	   << "Hostname (nodename): \"" << systemInfo[1] << "\",\n"
-	   << "Release: \"" << systemInfo[2] << "\", "
-       << "Version: \"" << systemInfo[3] << "\",\n"
-       << "Hardware type: \"" << systemInfo[4] << "\"\n";
-  cout << "User Login: \"" << userLogin[0] << "\", "
-       << "UID: \"" << userLogin[1] << "\", "
-       << "GID: \"" << userLogin[2] << "\"\n";
-  cout << "Total Memory: \"" << sysMemory[0] << " MB\", "
-       << "Free Memory: \"" << sysMemory[1] << " MB\",\n"
-       << "Total Swap: \"" << sysMemory[2] << " MB\", "
-       << "Free Swap: \"" << sysMemory[3] << " MB\"\n";
+  cout << "Operating System: \"" << getSysSysname() << "\", "
+  	   << "Hostname (nodename): \"" << getSysNodename() << "\",\n"
+	   << "Release: \"" << getSysRelease() << "\", "
+       << "Version: \"" << getSysVersion() << "\",\n"
+       << "Hardware type: \"" << getSysMachine() << "\"\n";
+  cout << "User Login: \"" << getUserLogin() << "\", "
+       << "UID: \"" << getUserUid() << "\", "
+       << "GID: \"" << getUserGid() << "\"\n";
+  cout << "Total Memory: \"" << getSysTotalram() << " MB\", "
+       << "Free Memory: \"" << getSysFreeram() << " MB\",\n"
+       << "Total Swap: \"" << getSysTotalswap() << " MB\", "
+       << "Free Swap: \"" << getSysFreeswap() << " MB\"\n";
 }

@@ -10,11 +10,30 @@ class Linux
 		void setSystemInformation();
 		void setUserInformation();
 		void setSystemMemory();
+
+		// System information inside utsname structure
+		void getSysSysname();
+		void getSysNodename();
+		void getSysRelease();
+		void getSysVersion();
+		void getSysMachine();
+
+		// User information to get login, uid and gid
+		void getUserLogin();
+		void getUserUid();
+		void getUserGid();
+
+		// System information inside sysinfo structure
+		void getSysTotalram();
+		void getSysFreeram();
+		void getSysTotalswap();
+		void getSysFreeswap();
+		
 		void print();
 
 	private:
 		vector<string> systemInfo;
-		vector<string> userLogin;
+		vector<string> userInfo;
 		vector<int> sysMemory;
 };
 

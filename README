@@ -1,3 +1,11 @@
-Simple but "i hope" useful test to get informations about "system and user" on GNU/Linux machine; 
-the purpose is to test many POSIX functions (System Call) using the object oriented programming (C++) on PPC
-with kernel Linux 3.0.1. 
+###############################################################################
+ Linux Class
+###############################################################################
+
+Simple but "i hope" useful test to get informations about "system and user" on 
+GNU/Linux machine.
+
+The purpose is to test many Standard POSIX functions (System Call) using the 
+object oriented programming (C++) on PPC with kernel Linux 3.0.1.
+
+feedback: Luca (behemoth@autistici.org)
