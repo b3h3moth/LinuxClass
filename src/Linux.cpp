@@ -32,17 +32,17 @@ void Linux::setSystemInformation()
 
 void Linux::setUserInformation()
 {
-	uid_t uid = getuid();
-	gid_t gid = getgid();
-	
-	stringstream uidConv;
-	stringstream gidConv;
-	uidConv << uid;
-	gidConv << gid;
+	// These SysCall are always successful.
+	uid_t realUid = getuid();	// Real User ID
+	uid_t effUid = geteuid();	// Effective User ID
+	gid_t realGid = getgid();	// Real Group ID
+	gid_t effGid = getegid();	// Effective Group ID
 	
 	userInfo.push_back(getlogin());
-	userInfo.push_back(uidConv.str());
-	userInfo.push_back(gidConv.str());
+	userInfo.push_back(convIntToStr(realUid));
+	userInfo.push_back(convIntToStr(effUid));
+	userInfo.push_back(convIntToStr(realGid));
+	userInfo.push_back(convIntToStr(effGid));
 }
 
 void Linux::setSystemMemory()
@@ -62,21 +62,12 @@ void Linux::setUserPw()
 {
 	struct passwd *pd;
 
-	if ((pd = getpwuid(convStrToInt(getUserUid()))) != NULL)
+	if ((pd = getpwuid(convStrToInt(getRealUid()))) != NULL)
 	{
 		userPw.push_back(pd->pw_name);
 		userPw.push_back(pd->pw_dir);
 		userPw.push_back(pd->pw_shell);
 	}
-}
-
-int Linux::convStrToInt(string str)
-{
-	int intNumber;
-	stringstream s(str);
-	s >> intNumber;
-
-	return intNumber;
 }
 
 string Linux::getSysSysname()
@@ -109,14 +100,24 @@ string Linux::getUserLogin()
 	return userInfo[0];
 }
 
-string Linux::getUserUid()
+string Linux::getRealUid()
 {
 	return userInfo[1];
 }
 
-string Linux::getUserGid()
+string Linux::getEffectiveUid()
 {
 	return userInfo[2];
+}
+
+string Linux::getRealGid()
+{
+	return userInfo[3];
+}
+
+string Linux::getEffectiveGid()
+{
+	return userInfo[4];
 }
 
 int Linux::getSysTotalram()
@@ -158,20 +159,46 @@ void Linux::print()
 {
   //for (int i=0; i<systemInfo.size(); i++)
   //      cout << systemInfo[i] << endl;
+  cout << "INFO ABOUT KERNEL" << endl;
   cout << "Operating System: \"" << getSysSysname() << "\", "
   	   << "Hostname (nodename): \"" << getSysNodename() << "\",\n"
 	   << "Release: \"" << getSysRelease() << "\", "
 	   << "Version: \"" << getSysVersion() << "\",\n"
-       << "Hardware type: \"" << getSysMachine() << "\"\n";
+       << "Hardware type: \"" << getSysMachine() << "\"\n\n";
+  cout << "Login, UID, GID" << endl;
   cout << "User Login: \"" << getUserLogin() << "\", "
-       << "UID: \"" << getUserUid() << "\", "
-       << "GID: \"" << getUserGid() << "\"\n";
+       << "Real UID: \"" << getRealUid() << "\", "
+       << "Effective UID: \"" << getEffectiveUid() << "\"\n"
+       << "Real GID: \"" << getRealGid() << "\", "
+       << "Effective GID: \"" << getEffectiveGid() << "\"\n\n";
+  cout << "INFO ABOUT MEMORY" << endl;
   cout << "Total Memory: \"" << getSysTotalram() << " MB\", "
        << "Free Memory: \"" << getSysFreeram() << " MB\",\n"
        << "Total Swap: \"" << getSysTotalswap() << " MB\", "
-       << "Free Swap: \"" << getSysFreeswap() << " MB\"\n";
-  cout << "User name (/etc/passwd): \"" << getUserPwname() << "\", "
-  	   << "Initial directory (/etc/passwd): \"" << getUserPwdir() << "\",\n"
-	   << "Default shell (/etc/passwd): \"" << getUserPwshell() << "\"";
+       << "Free Swap: \"" << getSysFreeswap() << " MB\"\n\n";
+  cout << "INFO FROM /etc/passwd" << endl;
+  cout << "User name: \"" << getUserPwname() << "\", "
+  	   << "Initial directory: \"" << getUserPwdir() << "\",\n"
+	   << "Default shell: \"" << getUserPwshell() << "\"\n";
   	   
+}
+
+// Utility functions; they aren't member functions
+// Convert string to int
+int Linux::convStrToInt(string str)
+{
+	int intNumber;
+	stringstream s(str);
+	s >> intNumber;
+
+	return intNumber;
+}
+
+// Convert int to string
+string Linux::convIntToStr(int val)
+{
+	stringstream s;
+	s << val;
+
+	return s.str();
 }

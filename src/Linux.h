@@ -20,10 +20,12 @@ class Linux
 		string getSysVersion();
 		string getSysMachine();
 
-		// User information obtained through getlogin(), getuid(), getgid()
+		// User information obtained through getlogin(), getuid(), etc...
 		string getUserLogin();
-		string getUserUid();
-		string getUserGid();
+		string getRealUid();
+		string getEffectiveUid();
+		string getRealGid();
+		string getEffectiveGid();
 
 		// System information obtained through sysinfo struct
 		int getSysTotalram();
@@ -46,6 +48,7 @@ class Linux
 
 		// Utility functions: Type conversions
 		int convStrToInt(string str);
+		string convIntToStr(int val);
 };
 
 #endif
