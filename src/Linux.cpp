@@ -53,9 +53,19 @@ void Linux::setSystemMemory()
 void Linux::setUserPw()
 {
 	struct passwd *pd;
-	
-	pd = getpwuid(1001);
+
+	pd = getpwuid(convStrToInt(getUserUid()));
+
 	userPw.push_back(pd->pw_name);
+}
+
+int Linux::convStrToInt(string str)
+{
+	int intNumber;
+	stringstream s(str);
+	s >> intNumber;
+
+	return intNumber;
 }
 
 string Linux::getSysSysname()

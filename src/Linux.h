@@ -40,6 +40,8 @@ class Linux
 		vector<string> userInfo;
 		vector<int> sysMemory;
 		vector<string> userPw;
+		// Utility functions: conversions
+		int convStrToInt(string str);
 };
 
 #endif
