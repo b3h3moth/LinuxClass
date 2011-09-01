@@ -7,6 +7,7 @@ using namespace std;
 class Linux
 {
 	public:
+		Linux();
 		void setSystemInformation();
 		void setUserInformation();
 		void setSystemMemory();
@@ -42,6 +43,7 @@ class Linux
 		vector<string> userInfo;
 		vector<int> sysMemory;
 		vector<string> userPw;
+
 		// Utility functions: Type conversions
 		int convStrToInt(string str);
 };

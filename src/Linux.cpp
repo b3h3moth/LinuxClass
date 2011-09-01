@@ -8,6 +8,14 @@ using namespace std;
 #include "Linux.h"
 
 
+Linux::Linux()
+{
+	setSystemInformation();
+	setUserInformation();
+	setSystemMemory();
+	setUserPw();
+}
+
 void Linux::setSystemInformation()
 {
 	struct utsname uts;
