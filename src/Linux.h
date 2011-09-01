@@ -32,6 +32,8 @@ class Linux
 		
 		// User information obtained through passwd struct
 		string getUserPwname();
+		string getUserPwdir();
+		string getUserPwshell();
 		
 		void print();
 
@@ -40,7 +42,7 @@ class Linux
 		vector<string> userInfo;
 		vector<int> sysMemory;
 		vector<string> userPw;
-		// Utility functions: conversions
+		// Utility functions: Type conversions
 		int convStrToInt(string str);
 };
 

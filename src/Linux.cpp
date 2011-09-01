@@ -54,9 +54,12 @@ void Linux::setUserPw()
 {
 	struct passwd *pd;
 
-	pd = getpwuid(convStrToInt(getUserUid()));
-
-	userPw.push_back(pd->pw_name);
+	if ((pd = getpwuid(convStrToInt(getUserUid()))) != NULL)
+	{
+		userPw.push_back(pd->pw_name);
+		userPw.push_back(pd->pw_dir);
+		userPw.push_back(pd->pw_shell);
+	}
 }
 
 int Linux::convStrToInt(string str)
@@ -133,6 +136,16 @@ string Linux::getUserPwname()
 	return userPw[0];
 }
 
+string Linux::getUserPwdir()
+{
+	return userPw[1];
+}
+
+string Linux::getUserPwshell()
+{
+	return userPw[2];
+}
+
 void Linux::print()
 {
   //for (int i=0; i<systemInfo.size(); i++)
@@ -140,7 +153,7 @@ void Linux::print()
   cout << "Operating System: \"" << getSysSysname() << "\", "
   	   << "Hostname (nodename): \"" << getSysNodename() << "\",\n"
 	   << "Release: \"" << getSysRelease() << "\", "
-       << "Version: \"" << getSysVersion() << "\",\n"
+	   << "Version: \"" << getSysVersion() << "\",\n"
        << "Hardware type: \"" << getSysMachine() << "\"\n";
   cout << "User Login: \"" << getUserLogin() << "\", "
        << "UID: \"" << getUserUid() << "\", "
@@ -149,5 +162,8 @@ void Linux::print()
        << "Free Memory: \"" << getSysFreeram() << " MB\",\n"
        << "Total Swap: \"" << getSysTotalswap() << " MB\", "
        << "Free Swap: \"" << getSysFreeswap() << " MB\"\n";
-  cout << "/etc/passwd User name: \"" << getUserPwname() << "\", ";
+  cout << "User name (/etc/passwd): \"" << getUserPwname() << "\", "
+  	   << "Initial directory (/etc/passwd): \"" << getUserPwdir() << "\",\n"
+	   << "Default shell (/etc/passwd): \"" << getUserPwshell() << "\"";
+  	   
 }
