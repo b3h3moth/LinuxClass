@@ -4,6 +4,7 @@ using namespace std;
 #include <unistd.h>
 #include <sys/utsname.h>
 #include <sys/sysinfo.h>
+#include <pwd.h>
 #include "Linux.h"
 
 
@@ -31,9 +32,9 @@ void Linux::setUserInformation()
 	uidConv << uid;
 	gidConv << gid;
 	
-	userLogin.push_back (getlogin());
-	userLogin.push_back (uidConv.str());
-	userLogin.push_back (gidConv.str());
+	userInfo.push_back(getlogin());
+	userInfo.push_back(uidConv.str());
+	userInfo.push_back(gidConv.str());
 }
 
 void Linux::setSystemMemory()
@@ -42,71 +43,84 @@ void Linux::setSystemMemory()
 	
 	if (sysinfo (&info) == 0)
 	{
-		sysMemory.push_back (info.totalram / (1024 * 1024));
-		sysMemory.push_back (info.freeram / (1024 * 1024));
-		sysMemory.push_back (info.totalswap / (1024 * 1024));
-		sysMemory.push_back (info.freeswap / (1024 * 1024));
+		sysMemory.push_back(info.totalram / (1024 * 1024));
+		sysMemory.push_back(info.freeram / (1024 * 1024));
+		sysMemory.push_back(info.totalswap / (1024 * 1024));
+		sysMemory.push_back(info.freeswap / (1024 * 1024));
 	}
 }
 
-void Linux::getSysSysname()
+void Linux::setUserPw()
+{
+	struct passwd *pd;
+	
+	pd = getpwuid(1001);
+	userPw.push_back(pd->pw_name);
+}
+
+string Linux::getSysSysname()
 {
 	return systemInfo[0];
 }
 
-void Linux::getSysNodename()
+string Linux::getSysNodename()
 {
 	return systemInfo[1];
 }
 
-void Linux::getSysRelease()
+string Linux::getSysRelease()
 {
 	return systemInfo[2];
 }
 
-void Linux::getSysVersion()
+string Linux::getSysVersion()
 {
 	return systemInfo[3];
 }
 
-void Linux::getSysMachine()
+string Linux::getSysMachine()
 {
 	return systemInfo[4];
 }
 
-void Linux::getUserLogin()
+string Linux::getUserLogin()
 {
 	return userInfo[0];
 }
 
-void Linux::getUserUid();
+string Linux::getUserUid()
 {
 	return userInfo[1];
 }
 
-void Linux::getUserGid()
+string Linux::getUserGid()
 {
 	return userInfo[2];
 }
 
-void Linux::getSysTotalram()
+int Linux::getSysTotalram()
 {
 	return sysMemory[0];
 }
 
-void Linux::getSysFreeram()
+int Linux::getSysFreeram()
 {
 	return sysMemory[1];
 }
 
-void Linux::getSysTotalswap()
+int Linux::getSysTotalswap()
 {
 	return sysMemory[2];
 }
 
-void Linux::getSysFreeswap()
+int Linux::getSysFreeswap()
 {
 	return sysMemory[3];
+}
+
+string Linux::getUserPwname()
+{
+	return userPw[0];
 }
 
 void Linux::print()
@@ -125,4 +139,5 @@ void Linux::print()
        << "Free Memory: \"" << getSysFreeram() << " MB\",\n"
        << "Total Swap: \"" << getSysTotalswap() << " MB\", "
        << "Free Swap: \"" << getSysFreeswap() << " MB\"\n";
+  cout << "/etc/passwd User name: \"" << getUserPwname() << "\", ";
 }

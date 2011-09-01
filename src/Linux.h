@@ -10,24 +10,28 @@ class Linux
 		void setSystemInformation();
 		void setUserInformation();
 		void setSystemMemory();
+		void setUserPw();
 
-		// System information inside utsname structure
-		void getSysSysname();
-		void getSysNodename();
-		void getSysRelease();
-		void getSysVersion();
-		void getSysMachine();
+		// System information obtained through ustname struct
+		string getSysSysname();
+		string getSysNodename();
+		string getSysRelease();
+		string getSysVersion();
+		string getSysMachine();
 
-		// User information to get login, uid and gid
-		void getUserLogin();
-		void getUserUid();
-		void getUserGid();
+		// User information obtained through getlogin(), getuid(), getgid()
+		string getUserLogin();
+		string getUserUid();
+		string getUserGid();
 
-		// System information inside sysinfo structure
-		void getSysTotalram();
-		void getSysFreeram();
-		void getSysTotalswap();
-		void getSysFreeswap();
+		// System information obtained through sysinfo struct
+		int getSysTotalram();
+		int getSysFreeram();
+		int getSysTotalswap();
+		int getSysFreeswap();
+		
+		// User information obtained through passwd struct
+		string getUserPwname();
 		
 		void print();
 
@@ -35,6 +39,7 @@ class Linux
 		vector<string> systemInfo;
 		vector<string> userInfo;
 		vector<int> sysMemory;
+		vector<string> userPw;
 };
 
 #endif

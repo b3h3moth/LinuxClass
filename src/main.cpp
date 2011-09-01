@@ -5,6 +5,7 @@ int main() {
 	ogg.setSystemInformation();
 	ogg.setUserInformation();
 	ogg.setSystemMemory();
+	ogg.setUserPw();
 	ogg.print();
 
 	return(0);
