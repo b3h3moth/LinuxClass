@@ -1,9 +1,11 @@
 #include <iostream>
 #include <sstream>
 using namespace std;
+#include <stdlib.h>
 #include <unistd.h>
 #include <sys/utsname.h>
 #include <sys/sysinfo.h>
+#include <sys/statvfs.h>
 #include <pwd.h>
 #include "Linux.h"
 
@@ -14,19 +16,21 @@ Linux::Linux()
 	setUserInformation();
 	setSystemMemory();
 	setUserPw();
+	setFileSystemInfo();
 }
 
 void Linux::setSystemInformation()
 {
 	struct utsname uts;
 	
-	if (uname (&uts) == 0)
-	{
-		systemInfo.push_back (uts.sysname);
-		systemInfo.push_back (uts.nodename);
-		systemInfo.push_back (uts.release);
-		systemInfo.push_back (uts.version);
-		systemInfo.push_back (uts.machine);
+	if (uname (&uts) < 0)
+		exit(EXIT_FAILURE);
+	else {
+		systemInfo.push_back(uts.sysname);
+		systemInfo.push_back(uts.nodename);
+		systemInfo.push_back(uts.release);
+		systemInfo.push_back(uts.version);
+		systemInfo.push_back(uts.machine);
 	}
 }
 
@@ -49,8 +53,9 @@ void Linux::setSystemMemory()
 {
 	struct sysinfo info;
 	
-	if (sysinfo (&info) == 0)
-	{
+	if (sysinfo (&info) < 0)
+		exit(EXIT_FAILURE);
+	else {
 		sysMemory.push_back(info.totalram / (1024 * 1024));
 		sysMemory.push_back(info.freeram / (1024 * 1024));
 		sysMemory.push_back(info.totalswap / (1024 * 1024));
@@ -62,11 +67,36 @@ void Linux::setUserPw()
 {
 	struct passwd *pd;
 
-	if ((pd = getpwuid(convStrToInt(getRealUid()))) != NULL)
-	{
+	if ((pd = getpwuid(convStrToInt(getRealUid()))) == NULL)
+		exit(EXIT_FAILURE);
+	else {
 		userPw.push_back(pd->pw_name);
 		userPw.push_back(pd->pw_dir);
 		userPw.push_back(pd->pw_shell);
+	}
+}
+
+void Linux::setFileSystemInfo()
+{
+	struct statvfs hdd;
+	unsigned long block_size, blocks, blocks_free, 
+				  disk_size, disk_used, disk_free;
+	const char *path = "/";
+
+	if (statvfs(path, &hdd) < 0)
+		exit(EXIT_FAILURE);
+	else {
+		block_size = hdd.f_bsize;
+		blocks = hdd.f_blocks;
+		blocks_free = hdd.f_bfree;
+
+		disk_size = (blocks * block_size) / (1024 * 1024);
+		disk_free = (blocks_free * block_size) / (1024 * 1024);
+		disk_used = (disk_size - disk_free) ;
+
+		fsInfo.push_back(disk_size);
+		fsInfo.push_back(disk_used);
+		fsInfo.push_back(disk_free);
 	}
 }
 
@@ -155,6 +185,21 @@ string Linux::getUserPwshell()
 	return userPw[2];
 }
 
+unsigned long Linux::getFsDiskSize()
+{
+	return fsInfo[0];
+}
+
+unsigned long Linux::getFsDiskFree()
+{
+	return fsInfo[1];
+}
+
+unsigned long Linux::getFsDiskUsed()
+{
+	return fsInfo[2];
+}
+
 void Linux::print()
 {
   //for (int i=0; i<systemInfo.size(); i++)
@@ -179,7 +224,11 @@ void Linux::print()
   cout << "INFO FROM /etc/passwd" << endl;
   cout << "User name: \"" << getUserPwname() << "\", "
   	   << "Initial directory: \"" << getUserPwdir() << "\",\n"
-	   << "Default shell: \"" << getUserPwshell() << "\"\n";
+	   << "Default shell: \"" << getUserPwshell() << "\"\n\n";
+  cout << "FILE SYSTEM / (root)" << endl;
+  cout << "Disk size: \"" << getFsDiskSize() << "\" MB\n"
+  	   << "Disk free: \"" << getFsDiskFree() << "\" MB\n"
+  	   << "Disk used: \"" << getFsDiskUsed() << "\" MB\n";
   	   
 }
 

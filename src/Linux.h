@@ -12,6 +12,7 @@ class Linux
 		void setUserInformation();
 		void setSystemMemory();
 		void setUserPw();
+		void setFileSystemInfo();
 
 		// System information obtained through ustname struct
 		string getSysSysname();
@@ -37,6 +38,11 @@ class Linux
 		string getUserPwname();
 		string getUserPwdir();
 		string getUserPwshell();
+
+		// File system Information through statvfs() System Call
+		unsigned long getFsDiskSize();
+		unsigned long getFsDiskFree();
+		unsigned long getFsDiskUsed();
 		
 		void print();
 
@@ -45,6 +51,7 @@ class Linux
 		vector<string> userInfo;
 		vector<int> sysMemory;
 		vector<string> userPw;
+		vector<unsigned long> fsInfo;
 
 		// Utility functions: Type conversions
 		int convStrToInt(string str);
