@@ -81,18 +81,17 @@ void Linux::setFileSystemInfo()
 	struct statvfs hdd;
 	unsigned long block_size, blocks, blocks_free, 
 				  disk_size, disk_used, disk_free;
-	const char *path = "/";
 
-	if (statvfs(path, &hdd) < 0)
+	if (statvfs( getUserPwdir().c_str(), &hdd) < 0)
 		exit(EXIT_FAILURE);
 	else {
 		block_size = hdd.f_bsize;
 		blocks = hdd.f_blocks;
 		blocks_free = hdd.f_bfree;
 
-		disk_size = (blocks * block_size) / (1024 * 1024);
-		disk_free = (blocks_free * block_size) / (1024 * 1024);
-		disk_used = (disk_size - disk_free) ;
+		disk_size = (blocks * block_size);
+		disk_free = (blocks_free * block_size);
+		disk_used = (disk_size - disk_free);
 
 		fsInfo.push_back(disk_size);
 		fsInfo.push_back(disk_used);
@@ -225,10 +224,10 @@ void Linux::print()
   cout << "User name: \"" << getUserPwname() << "\", "
   	   << "Initial directory: \"" << getUserPwdir() << "\",\n"
 	   << "Default shell: \"" << getUserPwshell() << "\"\n\n";
-  cout << "FILE SYSTEM / (root)" << endl;
-  cout << "Disk size: \"" << getFsDiskSize() << "\" MB\n"
-  	   << "Disk free: \"" << getFsDiskFree() << "\" MB\n"
-  	   << "Disk used: \"" << getFsDiskUsed() << "\" MB\n";
+  cout << "FILE SYSTEM " << getUserPwdir() << "\"" << endl;
+  cout << "Disk size: \"" << getFsDiskSize() << "\" byte\n"
+  	   << "Disk free: \"" << getFsDiskFree() << "\" byte\n"
+  	   << "Disk used: \"" << getFsDiskUsed() << "\" byte\n";
   	   
 }
 
