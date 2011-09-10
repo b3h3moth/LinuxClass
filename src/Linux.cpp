@@ -79,8 +79,8 @@ void Linux::setUserPw()
 void Linux::setFileSystemInfo()
 {
 	struct statvfs hdd;
-	unsigned long block_size, blocks, blocks_free, 
-				  disk_size, disk_used, disk_free;
+	unsigned long long block_size, blocks, blocks_free; 
+	double disk_size, disk_used, disk_free;
 
 	if (statvfs( getUserPwdir().c_str(), &hdd) < 0)
 		exit(EXIT_FAILURE);
@@ -89,9 +89,9 @@ void Linux::setFileSystemInfo()
 		blocks = hdd.f_blocks;
 		blocks_free = hdd.f_bfree;
 
-		disk_size = (blocks * block_size);
-		disk_free = (blocks_free * block_size);
-		disk_used = (disk_size - disk_free);
+		disk_size = (double)(blocks * block_size)/(1024*1024);
+		disk_free = (double)(blocks_free * block_size)/(1024*1024);
+		disk_used = (double)(disk_size - disk_free);
 
 		fsInfo.push_back(disk_size);
 		fsInfo.push_back(disk_used);
@@ -184,17 +184,17 @@ string Linux::getUserPwshell()
 	return userPw[2];
 }
 
-unsigned long Linux::getFsDiskSize()
+double Linux::getFsDiskSize()
 {
 	return fsInfo[0];
 }
 
-unsigned long Linux::getFsDiskFree()
+double Linux::getFsDiskFree()
 {
 	return fsInfo[1];
 }
 
-unsigned long Linux::getFsDiskUsed()
+double Linux::getFsDiskUsed()
 {
 	return fsInfo[2];
 }
@@ -225,9 +225,9 @@ void Linux::print()
   	   << "Initial directory: \"" << getUserPwdir() << "\",\n"
 	   << "Default shell: \"" << getUserPwshell() << "\"\n\n";
   cout << "FILE SYSTEM " << getUserPwdir() << "\"" << endl;
-  cout << "Disk size: \"" << getFsDiskSize() << "\" byte\n"
-  	   << "Disk free: \"" << getFsDiskFree() << "\" byte\n"
-  	   << "Disk used: \"" << getFsDiskUsed() << "\" byte\n";
+  cout << "Disk size: \"" << getFsDiskSize() << "\" MB\n"
+  	   << "Disk free: \"" << getFsDiskFree() << "\" MB\n"
+  	   << "Disk used: \"" << getFsDiskUsed() << "\" MB\n";
   	   
 }
 

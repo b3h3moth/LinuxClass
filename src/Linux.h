@@ -40,9 +40,9 @@ class Linux
 		string getUserPwshell();
 
 		// File system Information through statvfs() System Call
-		unsigned long getFsDiskSize();
-		unsigned long getFsDiskFree();
-		unsigned long getFsDiskUsed();
+		double getFsDiskSize();
+		double getFsDiskFree();
+		double getFsDiskUsed();
 		
 		void print();
 
@@ -51,7 +51,7 @@ class Linux
 		vector<string> userInfo;
 		vector<int> sysMemory;
 		vector<string> userPw;
-		vector<unsigned long> fsInfo;
+		vector<double> fsInfo;
 
 		// Utility functions: Type conversions
 		int convStrToInt(string str);
