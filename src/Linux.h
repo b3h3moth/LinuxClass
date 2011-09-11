@@ -1,5 +1,6 @@
 #ifndef LINUX_H
 #define LINUX_H
+
 #include <vector>
 #include <string>
 using namespace std;
@@ -7,7 +8,9 @@ using namespace std;
 class Linux
 {
 	public:
+		// Default Linux Class Constructor
 		Linux();
+
 		void setSystemInformation();
 		void setUserInformation();
 		void setSystemMemory();
@@ -43,7 +46,8 @@ class Linux
 		double getFsDiskSize();
 		double getFsDiskFree();
 		double getFsDiskUsed();
-		
+
+		// Only for testing:
 		void print();
 
 	private:
