@@ -201,38 +201,6 @@ double Linux::getFsDiskUsed()
 	return fsInfo[2];
 }
 
-void Linux::print()
-{
-  //for (int i=0; i<systemInfo.size(); i++)
-  //      cout << systemInfo[i] << endl;
-  cout << "INFO ABOUT KERNEL" << endl;
-  cout << "Operating System: \"" << getSysSysname() << "\", "
-  	   << "Hostname (nodename): \"" << getSysNodename() << "\",\n"
-	   << "Release: \"" << getSysRelease() << "\", "
-	   << "Version: \"" << getSysVersion() << "\",\n"
-       << "Hardware type: \"" << getSysMachine() << "\"\n\n";
-  cout << "Login, UID, GID" << endl;
-  cout << "User Login: \"" << getUserLogin() << "\", "
-       << "Real UID: \"" << getRealUid() << "\", "
-       << "Effective UID: \"" << getEffectiveUid() << "\"\n"
-       << "Real GID: \"" << getRealGid() << "\", "
-       << "Effective GID: \"" << getEffectiveGid() << "\"\n\n";
-  cout << "INFO ABOUT MEMORY" << endl;
-  cout << "Total Memory: \"" << getSysTotalram() << " MB\", "
-       << "Free Memory: \"" << getSysFreeram() << " MB\",\n"
-       << "Total Swap: \"" << getSysTotalswap() << " MB\", "
-       << "Free Swap: \"" << getSysFreeswap() << " MB\"\n\n";
-  cout << "INFO FROM /etc/passwd" << endl;
-  cout << "User name: \"" << getUserPwname() << "\", "
-  	   << "Initial directory: \"" << getUserPwdir() << "\",\n"
-	   << "Default shell: \"" << getUserPwshell() << "\"\n\n";
-  cout << "FILE SYSTEM " << getUserPwdir() << "\"" << endl;
-  cout << "Disk size: \"" << getFsDiskSize() << "\" MB\n"
-  	   << "Disk free: \"" << getFsDiskFree() << "\" MB\n"
-  	   << "Disk used: \"" << getFsDiskUsed() << "\" MB\n";
-  	   
-}
-
 // Utility functions; they aren't member functions
 // Convert string to int
 int Linux::convStrToInt(string str)
